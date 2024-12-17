@@ -39,7 +39,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   try {
     const body = await request.json();
     const { inStock } = body;
-    const { id } = params;  // Extract `id` from `params`
+    const { id } = params; // Extract `id` from `params`
 
     // Input validation
     if (!id || typeof inStock !== "boolean") {
