@@ -35,10 +35,11 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
 }
 
 // PUT handler for updating the product's stock status
-export async function PUT(request: NextRequest) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const body = await request.json();
-    const { id, inStock } = body;
+    const { inStock } = body;
+    const { id } = params;  // Extract `id` from `params`
 
     // Input validation
     if (!id || typeof inStock !== "boolean") {
