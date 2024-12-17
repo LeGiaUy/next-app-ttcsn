@@ -2,28 +2,48 @@
 
 import getProducts, { IProductParams } from "@/actions/getProducts";
 import { useSearchParams } from 'next/navigation'; // Import useSearchParams từ next/navigation
+import { useEffect, useState } from 'react';
 import Container from "./components/container";
 import HomeBanner from "./components/HomeBanner";
 import NullData from "./components/NullData";
 import ProductCard from "./components/products/productCard";
 
-export default async function Home() {
-  // Lấy tham số searchParams từ URL
-  const searchParams = useSearchParams();
+export default function Home() {
+  const searchParams = useSearchParams(); // Lấy tham số searchParams từ URL
 
-  // Kiểm tra nếu searchParams là null
-  if (!searchParams) {
-    return <NullData title="Không có tham số tìm kiếm trong URL" />;
+  // Trạng thái để lưu dữ liệu sản phẩm
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Kiểm tra nếu searchParams có giá trị hợp lệ
+  useEffect(() => {
+    if (!searchParams) return;
+
+    const params: IProductParams = {
+      category: searchParams.get('category') || null,  // Nếu không có category thì null
+      searchTerm: searchParams.get('searchTerm') || null,  // Nếu không có searchTerm thì null
+    };
+
+    // Fetch dữ liệu sản phẩm
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const fetchedProducts = await getProducts(params);
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [searchParams]); // Chạy lại khi searchParams thay đổi
+
+  // Nếu đang tải dữ liệu
+  if (loading) {
+    return <div>Loading...</div>;
   }
-
-  // Chuyển đổi tham số query thành IProductParams
-  const params: IProductParams = {
-    category: searchParams.get('category') || null,  // Nếu không có category thì null
-    searchTerm: searchParams.get('searchTerm') || null,  // Nếu không có searchTerm thì null
-  };
-
-  // Fetch dữ liệu sản phẩm
-  const products = await getProducts(params);
 
   // Nếu không có sản phẩm, hiển thị giao diện NullData
   if (products.length === 0) {
