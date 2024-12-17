@@ -1,19 +1,23 @@
 import getProducts, { IProductParams } from "@/actions/getProducts";
-import { useRouter } from 'next/router'; // Import useRouter từ next/router
+import { useSearchParams } from 'next/navigation'; // Import useSearchParams từ next/navigation
 import Container from "./components/container";
 import HomeBanner from "./components/HomeBanner";
 import NullData from "./components/NullData";
 import ProductCard from "./components/products/productCard";
 
 export default async function Home() {
-  // Lấy tham số query từ URL
-  const router = useRouter();
-  const { category, searchTerm } = router.query;
+  // Lấy tham số searchParams từ URL
+  const searchParams = useSearchParams();
+
+  // Kiểm tra nếu searchParams là null
+  if (!searchParams) {
+    return <NullData title="Không có tham số tìm kiếm trong URL" />;
+  }
 
   // Chuyển đổi tham số query thành IProductParams
   const params: IProductParams = {
-    category: category ? category.toString() : null, // Nếu có category thì dùng, nếu không thì null
-    searchTerm: searchTerm ? searchTerm.toString() : null, // Nếu có searchTerm thì dùng, nếu không thì null
+    category: searchParams.get('category') || null,  // Nếu không có category thì null
+    searchTerm: searchParams.get('searchTerm') || null,  // Nếu không có searchTerm thì null
   };
 
   // Fetch dữ liệu sản phẩm
