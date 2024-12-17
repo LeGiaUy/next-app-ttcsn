@@ -7,11 +7,11 @@ import NullData from "./components/NullData";
 import ProductCard from "./components/products/productCard";
 
 interface HomeProps {
-  searchParams: IProductParams; // Nhận searchParams trực tiếp
+  searchParams: IProductParams; // Object chứa tham số truy vấn
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-  const products = await getProducts(searchParams);
+  const products = await getProducts(searchParams); // Không cần `await` trên `searchParams`
 
   if (products.length === 0) {
     return <NullData title="Không có sản phẩm, ấn tất cả để xóa bộ lọc" />;
