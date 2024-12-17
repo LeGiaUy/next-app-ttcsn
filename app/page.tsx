@@ -5,14 +5,14 @@ import NullData from "./components/NullData";
 import ProductCard from "./components/products/productCard";
 
 interface HomeProps {
-  searchParams: Record<string, string | undefined>; // Dynamic query parameters
+  searchParams: URLSearchParams; // Lấy searchParams từ URL
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-  // Chuyển đổi searchParams thành IProductParams
+  // Lấy giá trị category và searchTerm từ searchParams
   const params: IProductParams = {
-    category: searchParams.category || null, // Nếu không có category thì null
-    searchTerm: searchParams.searchTerm || null, // Nếu không có searchTerm thì null
+    category: searchParams.get('category') || null, // Nếu không có category thì null
+    searchTerm: searchParams.get('searchTerm') || null, // Nếu không có searchTerm thì null
   };
 
   // Fetch dữ liệu sản phẩm
