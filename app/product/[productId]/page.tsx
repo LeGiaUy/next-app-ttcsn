@@ -8,7 +8,8 @@ interface IParams {
     productId?: string;
 }
 
-const Product = async({ params } : {params: IParams}) => {
+const Product = async (props: {params: Promise<IParams>}) => {
+    const params = await props.params;
     const product = await getProductById(params)
 
     if(!product) return <NullData title="Sản phẩm với ID tương ứng không tồn tại"/>

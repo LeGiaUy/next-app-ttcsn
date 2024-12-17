@@ -4,26 +4,26 @@ import { NextRequest, NextResponse } from "next/server";
 
 // DELETE handler for deleting a product by ID
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params; // Extract `id` from `params`
-
-  try {
-    const currentUser = await getCurrentUser();
-
-    if (!currentUser || currentUser.role !== "ADMIN") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const { id } = params; // Extract `id` from `params`
+  
+    try {
+      const currentUser = await getCurrentUser();
+  
+      if (!currentUser || currentUser.role !== "ADMIN") {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+  
+      // Delete the product with the provided ID
+      const product = await prisma.product.delete({
+        where: { id },
+      });
+  
+      return NextResponse.json(product, { status: 200 });
+    } catch (error) {
+      console.error("[PRODUCT_DELETE_ERROR]", error);
+      return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
-
-    // Delete the product with the provided ID
-    const product = await prisma.product.delete({
-      where: { id },
-    });
-
-    return NextResponse.json(product, { status: 200 });
-  } catch (error) {
-    console.error("[PRODUCT_DELETE_ERROR]", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
-}
 
 // PUT handler for updating the product's stock status
 export async function PUT(request: NextRequest) {

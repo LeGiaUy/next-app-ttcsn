@@ -9,7 +9,7 @@ import './globals.css'
 const notoSans = Noto_Sans({ subsets: ['latin', 'vietnamese'], weight: ['400', '700'] })
 
 export const metadata: Metadata = {
-  title: 'E-Shop',
+  title: 'Lava-Shop',
   description: 'Ecommerce app',
 }
 
