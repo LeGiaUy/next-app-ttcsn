@@ -3,8 +3,9 @@ import prisma from "@/libs/prismadb";
 import { NextRequest, NextResponse } from "next/server";
 
 // DELETE handler for deleting a product by ID
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params; // Extract `id` from `params`
+export async function DELETE(request: NextRequest) {
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop(); // Extract `id` from the URL path
 
   try {
     const currentUser = await getCurrentUser();
@@ -35,11 +36,13 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
 }
 
 // PUT handler for updating the product's stock status
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest) {
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop(); // Extract `id` from the URL path
+
   try {
     const body = await request.json();
-    const { inStock } = body;
-    const { id } = params; // Extract `id` from `params` (URL)
+    const { inStock } = body; // Extract `inStock` from the body
 
     // Input validation
     if (!id || typeof inStock !== "boolean") {
