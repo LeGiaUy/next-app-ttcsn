@@ -3,11 +3,8 @@ import prisma from "@/libs/prismadb";
 import { NextRequest, NextResponse } from "next/server";
 
 // DELETE handler for deleting a product by ID
-export async function DELETE(
-  _request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;  // Extract `id` from `params`
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+  const { id } = params; // Extract `id` from `params`
 
   try {
     const currentUser = await getCurrentUser();
