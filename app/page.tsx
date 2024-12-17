@@ -1,3 +1,5 @@
+'use client'
+
 import getProducts, { IProductParams } from "@/actions/getProducts";
 import { useSearchParams } from 'next/navigation'; // Import useSearchParams từ next/navigation
 import Container from "./components/container";
