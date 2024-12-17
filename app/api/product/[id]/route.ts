@@ -1,14 +1,10 @@
 import { getCurrentUser } from "@/actions/getCurrentUser";
 import prisma from "@/libs/prismadb";
-import { NextResponse } from "next/server";
-
-interface Params {
-  params: { id: string };
-}
+import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
-  request: Request,
-  { params }: Params // Explicitly define the params type
+  request: NextRequest,
+  { params }: { params: { id: string } } // Inline type definition
 ) {
   try {
     const currentUser = await getCurrentUser();
@@ -37,13 +33,16 @@ export async function DELETE(
   }
 }
 
-export async function PUT(request: Request) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } } // Add params here too for clarity
+) {
   try {
     const body = await request.json();
-    const { id, inStock } = body;
+    const { inStock } = body;
 
     // Input validation
-    if (!id || typeof inStock !== "boolean") {
+    if (typeof inStock !== "boolean") {
       return NextResponse.json(
         { error: "Invalid input" },
         { status: 400 }
@@ -52,7 +51,7 @@ export async function PUT(request: Request) {
 
     // Update the product's inStock field
     const updatedProduct = await prisma.product.update({
-      where: { id },
+      where: { id: params.id },
       data: { inStock },
     });
 
