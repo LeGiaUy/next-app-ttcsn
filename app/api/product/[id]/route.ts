@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 // DELETE handler for deleting a product by ID
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } } // Ensure the `params` argument is typed correctly
+  context: { params: { id: string } } // Thay đổi kiểu tham số context
 ) {
   const { id } = context.params;  // Extract `id` from `params`
 
