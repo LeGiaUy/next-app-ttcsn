@@ -1,18 +1,19 @@
 import getProducts, { IProductParams } from "@/actions/getProducts";
+import { useRouter } from 'next/router'; // Import useRouter từ next/router
 import Container from "./components/container";
 import HomeBanner from "./components/HomeBanner";
 import NullData from "./components/NullData";
 import ProductCard from "./components/products/productCard";
 
-interface HomeProps {
-  searchParams: URLSearchParams; // Lấy searchParams từ URL
-}
+export default async function Home() {
+  // Lấy tham số query từ URL
+  const router = useRouter();
+  const { category, searchTerm } = router.query;
 
-export default async function Home({ searchParams }: HomeProps) {
-  // Lấy giá trị category và searchTerm từ searchParams
+  // Chuyển đổi tham số query thành IProductParams
   const params: IProductParams = {
-    category: searchParams.get('category') || null, // Nếu không có category thì null
-    searchTerm: searchParams.get('searchTerm') || null, // Nếu không có searchTerm thì null
+    category: category ? category.toString() : null, // Nếu có category thì dùng, nếu không thì null
+    searchTerm: searchTerm ? searchTerm.toString() : null, // Nếu có searchTerm thì dùng, nếu không thì null
   };
 
   // Fetch dữ liệu sản phẩm
