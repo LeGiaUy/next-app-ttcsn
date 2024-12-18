@@ -1,33 +1,27 @@
-import getProducts, { IProductParams } from '@/actions/getProducts';
-import { GetServerSideProps } from 'next';
-import Container from './components/container';
-import HomeBanner from './components/HomeBanner';
-import NullData from './components/NullData';
-import ProductCard from './components/products/productCard';
+import getProducts, { IProductParams } from "@/actions/getProducts";
+import { useSearchParams } from "next/navigation"; // Import useSearchParams
+import Container from "./components/container";
+import HomeBanner from "./components/HomeBanner";
+import NullData from "./components/NullData";
+import ProductCard from "./components/products/productCard";
 
 // Define the props interface
 interface HomeProps {
-  products: any[];
-  searchParams: IProductParams;
+  products: any[]; // Ensure products is always an array
 }
 
-export const getServerSideProps: GetServerSideProps<HomeProps> = async ({ query }) => {
-  const searchParams: IProductParams = {
-    category: query.category as string | null,
-    searchTerm: query.searchTerm as string | null,
+export default async function Home() {
+  const searchParams = useSearchParams(); // Get the search params from the URL
+
+  // Handle the case where searchParams might be null
+  const params: IProductParams = {
+    category: searchParams?.get("category") || null,
+    searchTerm: searchParams?.get("searchTerm") || null,
   };
 
-  const products = await getProducts(searchParams);
+  // Fetch products based on the parameters
+  const products = await getProducts(params) || []; // Ensure it's always an array
 
-  return {
-    props: {
-      products,
-      searchParams,
-    },
-  };
-};
-
-export default function Home({ products, searchParams }: HomeProps) {
   if (products.length === 0) {
     return <NullData title="Không có sản phẩm" />;
   }
