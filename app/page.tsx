@@ -1,3 +1,5 @@
+"use client"; // Add this at the top of the file to mark it as a client component
+
 import getProducts, { IProductParams } from "@/actions/getProducts";
 import { useSearchParams } from "next/navigation"; // Import useSearchParams
 import Container from "./components/container";
@@ -7,7 +9,7 @@ import ProductCard from "./components/products/productCard";
 
 // Define the props interface
 interface HomeProps {
-  products: any[]; // Ensure products is always an array
+  products: any[];
 }
 
 export default async function Home() {
