@@ -6,12 +6,13 @@ import HomeBanner from "./components/HomeBanner";
 import NullData from "./components/NullData";
 import ProductCard from "./components/products/productCard";
 
+// Define the props interface
 interface HomeProps {
-  searchParams: IProductParams; // Expecting resolved IProductParams, not a Promise
+  searchParams: IProductParams; // The searchParams should be passed from the parent or layout
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-  // Ensure that searchParams are passed correctly and products are fetched
+  // Fetch products based on the searchParams asynchronously
   const products = await getProducts(searchParams);
 
   if (products.length === 0) {
