@@ -1,4 +1,4 @@
-export const relidate = 0;
+export const revalidate = 0;
 
 import getProducts, { IProductParams } from "@/actions/getProducts";
 import Container from "./components/container";
