@@ -7,11 +7,10 @@ import NullData from "./components/NullData";
 import ProductCard from "./components/products/productCard";
 
 interface HomeProps{
-  searchParams: Promise<IProductParams>
+  searchParams: IProductParams
 }
 
-export default async function Home(props: HomeProps) {
-  const searchParams = await props.searchParams;
+export default async function Home({searchParams}: HomeProps) {
   const products = await getProducts(searchParams)
 
   if(products.length === 0){
