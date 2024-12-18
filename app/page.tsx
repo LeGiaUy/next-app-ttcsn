@@ -1,5 +1,3 @@
-export const revalidate = 0;
-
 import getProducts, { IProductParams } from "@/actions/getProducts";
 import Container from "./components/container";
 import HomeBanner from "./components/HomeBanner";
@@ -8,12 +6,12 @@ import ProductCard from "./components/products/productCard";
 
 // Định nghĩa các props mà Home component nhận được
 interface HomeProps {
-  searchParams: IProductParams;
-  products: any[];  // Bạn có thể thay đổi kiểu dữ liệu này theo yêu cầu
+  searchParams: IProductParams; // Ensure searchParams is of type IProductParams, not a Promise
+  products: any[]; // You can change this type according to your needs
 }
 
 // Sử dụng async function để lấy dữ liệu trực tiếp trong page component
-export default async function Home({ searchParams }: { searchParams: IProductParams }) {
+export default async function Home({ searchParams }: HomeProps) {
   // Lấy sản phẩm từ API
   const products = await getProducts(searchParams);
 
