@@ -1,16 +1,17 @@
+// app/page.tsx
+
 import getProducts, { IProductParams } from "@/actions/getProducts";
 import Container from "./components/container";
 import HomeBanner from "./components/HomeBanner";
 import NullData from "./components/NullData";
 import ProductCard from "./components/products/productCard";
 
-// Define props that the Home component expects
 interface HomeProps {
-  searchParams: IProductParams; // Use the correct type for searchParams
+  searchParams: IProductParams; // Expecting resolved IProductParams, not a Promise
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-  // Fetch products based on searchParams
+  // Ensure that searchParams are passed correctly and products are fetched
   const products = await getProducts(searchParams);
 
   if (products.length === 0) {
