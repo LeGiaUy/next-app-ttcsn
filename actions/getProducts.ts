@@ -1,11 +1,9 @@
 import prisma from '@/libs/prismadb';
 
 export interface IProductParams {
-    category?: string;
-    search?: string;
-    [key: string]: string | undefined; // Cho phép các trường khác nếu cần
-  }
-  
+    category?: string | null;
+    searchTerm?: string | null;
+}
 
 export default async function getProducts(params: IProductParams) {
     try {
