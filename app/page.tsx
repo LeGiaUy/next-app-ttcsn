@@ -1,20 +1,33 @@
-// app/page.tsx
-
-import getProducts, { IProductParams } from "@/actions/getProducts";
-import Container from "./components/container";
-import HomeBanner from "./components/HomeBanner";
-import NullData from "./components/NullData";
-import ProductCard from "./components/products/productCard";
+import getProducts, { IProductParams } from '@/actions/getProducts';
+import { GetServerSideProps } from 'next';
+import Container from './components/container';
+import HomeBanner from './components/HomeBanner';
+import NullData from './components/NullData';
+import ProductCard from './components/products/productCard';
 
 // Define the props interface
 interface HomeProps {
-  searchParams: IProductParams; // The searchParams should be passed from the parent or layout
+  products: any[];
+  searchParams: IProductParams;
 }
 
-export default async function Home({ searchParams }: HomeProps) {
-  // Fetch products based on the searchParams asynchronously
+export const getServerSideProps: GetServerSideProps<HomeProps> = async ({ query }) => {
+  const searchParams: IProductParams = {
+    category: query.category as string | null,
+    searchTerm: query.searchTerm as string | null,
+  };
+
   const products = await getProducts(searchParams);
 
+  return {
+    props: {
+      products,
+      searchParams,
+    },
+  };
+};
+
+export default function Home({ products, searchParams }: HomeProps) {
   if (products.length === 0) {
     return <NullData title="Không có sản phẩm" />;
   }
